@@ -1,0 +1,68 @@
+-- 1. APPOINTMENT TABLE
+DROP TABLE IF EXISTS appointment;
+CREATE TABLE IF NOT EXISTS appointment (
+  AppointmentID int NOT NULL AUTO_INCREMENT,
+  PatientID int NOT NULL,
+  DoctorID int NOT NULL,
+  ClinicID int NOT NULL,
+  AppointmentDateTime datetime NOT NULL,
+  DurationMinutes int DEFAULT '30',
+  Status enum('Scheduled','Completed','Cancelled','No-Show') DEFAULT 'Scheduled',
+  Reason varchar(255) DEFAULT NULL,
+  Notes text,
+  CreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (AppointmentID),
+  KEY PatientID (PatientID),
+  KEY DoctorID (DoctorID),
+  KEY ClinicID (ClinicID)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO appointment (AppointmentID, PatientID, DoctorID, ClinicID, AppointmentDateTime, DurationMinutes, Status, Reason, Notes, CreatedAt) VALUES
+(1, 1, 1, 1, '2024-11-01 09:00:00', 30, 'Completed', 'Chest pain', 'ECG recommended', '2026-08-05 22:07:15'),
+(2, 2, 2, 2, '2024-11-05 13:00:00', 30, 'Completed', 'Skin rash on arms', 'Dermatitis suspected', '2026-08-05 22:07:15'),
+(3, 3, 3, 1, '2024-11-10 16:00:00', 20, 'Completed', 'Childhood asthma review', 'Inhaler prescription given', '2026-08-05 22:07:15'),
+(4, 4, 4, 3, '2024-11-15 10:30:00', 45, 'Completed', 'Knee pain', 'X-ray ordered', '2026-08-05 22:07:15'),
+(5, 5, 5, 2, '2024-11-20 14:00:00', 30, 'Completed', 'Follow-up blood pressure', 'Stable, dosage reduced', '2026-08-05 22:07:15'),
+(6, 6, 1, 1, '2024-11-25 11:00:00', 30, 'Completed', 'Heart palpitations', 'ECG and blood tests', '2026-08-05 22:07:15'),
+(7, 7, 3, 1, '2024-11-28 09:30:00', 20, 'Completed', 'Fever and cough', 'COVID-19 test required', '2026-08-05 22:07:15');
+
+-- 2. PRESCRIPTION TABLE
+DROP TABLE IF EXISTS prescription;
+CREATE TABLE IF NOT EXISTS prescription (
+  PrescriptionID int NOT NULL AUTO_INCREMENT,
+  PatientID int NOT NULL,
+  DoctorID int NOT NULL,
+  IssueDate date NOT NULL,
+  Duration varchar(50) DEFAULT NULL,
+  Notes text,
+  PRIMARY KEY (PrescriptionID),
+  KEY PatientID (PatientID),
+  KEY DoctorID (DoctorID)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO prescription (PrescriptionID, PatientID, DoctorID, IssueDate, Duration, Notes) VALUES
+(1, 1, 1, '2024-11-01', '1 month', 'Take with food'),
+(2, 2, 2, '2024-11-05', '2 weeks', 'Apply twice daily'),
+(3, 3, 3, '2024-11-10', '3 months', 'Use as needed'),
+(4, 4, 4, '2024-11-15', '2 weeks', 'Take after meals'),
+(5, 5, 5, '2024-11-20', 'Ongoing', 'Monitor blood sugar daily');
+
+-- 3. PRESCRIPTION_MEDICINE TABLE
+DROP TABLE IF EXISTS prescription_medicine;
+CREATE TABLE IF NOT EXISTS prescription_medicine (
+  PrescriptionID int NOT NULL,
+  MedicineID int NOT NULL,
+  Quantity int NOT NULL,
+  Dosage varchar(50) NOT NULL,
+  Frequency varchar(50) NOT NULL,
+  PRIMARY KEY (PrescriptionID,MedicineID),
+  KEY MedicineID (MedicineID)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO prescription_medicine (PrescriptionID, MedicineID, Quantity, Dosage, Frequency) VALUES
+(1, 8, 30, '5mg', 'Once daily'),
+(1, 1, 10, '500mg', 'As needed for pain'),
+(2, 10, 20, '400mg', 'Three times daily'),
+(3, 3, 2, '100mcg', 'As needed'),
+(4, 6, 14, '500mg', 'Twice daily'),
+(5, 9, 60, '500mg', 'Twice daily');
