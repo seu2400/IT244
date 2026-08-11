@@ -1,0 +1,80 @@
+-- 1. PERSON TABLE
+DROP TABLE IF EXISTS `person`;
+CREATE TABLE IF NOT EXISTS `person` (
+  `PersonID` int NOT NULL AUTO_INCREMENT,
+  `FirstName` varchar(50) NOT NULL,
+  `LastName` varchar(50) NOT NULL,
+  `DateOfBirth` date NOT NULL,
+  `Gender` enum('Male','Female') NOT NULL,
+  `Phone` varchar(15) NOT NULL,
+  `Email` varchar(100) DEFAULT NULL,
+  `Address` varchar(255) DEFAULT NULL,
+  `NationalID` varchar(20) NOT NULL,
+  `CreatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`PersonID`),
+  UNIQUE KEY `Phone` (`Phone`),
+  UNIQUE KEY `NationalID` (`NationalID`),
+  UNIQUE KEY `Email` (`Email`)
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `person` (`PersonID`, `FirstName`, `LastName`, `DateOfBirth`, `Gender`, `Phone`, `Email`, `Address`, `NationalID`, `CreatedAt`, `UpdatedAt`) VALUES
+(1, 'Ahmed', 'Al-Otaibi', '1985-03-15', 'Male', '0501234567', 'ahmed.otaibi@email.com', 'Al Malaz, Riyadh', '1012345678', '2026-08-05 22:07:15', '2026-08-05 22:07:15'),
+(2, 'Sara', 'Al-Ghamdi', '1990-07-20', 'Female', '0557654321', 'sara.ghamdi@email.com', 'Al Rawdah, Jeddah', '1023456789', '2026-08-05 22:07:15', '2026-08-05 22:07:15'),
+(3, 'Mohammed', 'Al-Harbi', '1982-11-08', 'Male', '0549876543', 'mohammed.harbi@email.com', 'Al Khobar, Dammam', '1034567890', '2026-08-05 22:07:15', '2026-08-05 22:07:15'),
+(4, 'Fatima', 'Al-Zahrani', '1995-02-25', 'Female', '0565432109', 'fatima.zahrani@email.com', 'Al Aziziyah, Riyadh', '1045678901', '2026-08-05 22:07:15', '2026-08-05 22:07:15'),
+(5, 'Khalid', 'Al-Dossary', '1978-09-30', 'Male', '0578901234', 'khalid.dossary@email.com', 'Al Safa, Jeddah', '1056789012', '2026-08-05 22:07:15', '2026-08-05 22:07:15'),
+(6, 'Nora', 'Al-Qahtani', '1992-12-12', 'Female', '0581230987', 'nora.qahtani@email.com', 'Al Rakah, Dammam', '1067890123', '2026-08-05 22:07:15', '2026-08-05 22:07:15'),
+(7, 'Sultan', 'Al-Malki', '1980-06-18', 'Male', '0593456789', 'sultan.malki@email.com', 'Al Olaya, Riyadh', '1078901234', '2026-08-05 22:07:15', '2026-08-05 22:07:15'),
+(8, 'Huda', 'Al-Shehri', '1998-04-05', 'Female', '0509876543', 'huda.shehri@email.com', 'Al Naseem, Jeddah', '1089012345', '2026-08-05 22:07:15', '2026-08-05 22:07:15'),
+(9, 'Faisal', 'Al-Anazi', '1987-10-22', 'Male', '0554321098', 'faisal.anazi@email.com', 'Al Dhahran, Dammam', '1090123456', '2026-08-05 22:07:15', '2026-08-05 22:07:15'),
+(10, 'Layla', 'Al-Rashidi', '1993-08-14', 'Female', '0567890123', 'layla.rashidi@email.com', 'Al Suwaidi, Riyadh', '1101234567', '2026-08-05 22:07:15', '2026-08-05 22:07:15'),
+(11, 'Omar', 'Al-Balawi', '1975-05-09', 'Male', '0576543210', 'omar.balawi@email.com', 'Al Hamra, Jeddah', '1112345678', '2026-08-05 22:07:15', '2026-08-05 22:07:15'),
+(12, 'Mona', 'Al-Shammari', '1989-07-27', 'Female', '0582109876', 'mona.shammari@email.com', 'Al Jubail, Dammam', '1123456789', '2026-08-05 22:07:15', '2026-08-05 22:07:15');
+
+-- 2. DOCTOR TABLE
+DROP TABLE IF EXISTS `doctor`;
+CREATE TABLE IF NOT EXISTS `doctor` (
+  `DoctorID` int NOT NULL AUTO_INCREMENT,
+  `PersonID` int NOT NULL,
+  `Specialty` varchar(100) NOT NULL,
+  `LicenseNumber` varchar(50) NOT NULL,
+  `ClinicID` int NOT NULL,
+  `ConsultationFee` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `HireDate` date NOT NULL,
+  `IsActive` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`DoctorID`),
+  UNIQUE KEY `LicenseNumber` (`LicenseNumber`),
+  KEY `PersonID` (`PersonID`),
+  KEY `ClinicID` (`ClinicID`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `doctor` (`DoctorID`, `PersonID`, `Specialty`, `LicenseNumber`, `ClinicID`, `ConsultationFee`, `HireDate`, `IsActive`) VALUES
+(1, 1, 'Cardiology', 'SA-MD-001', 1, 330.00, '2015-06-01', 1),
+(2, 2, 'Dermatology', 'SA-MD-002', 2, 275.00, '2017-09-15', 1),
+(3, 3, 'Pediatrics', 'SA-MD-003', 1, 220.00, '2018-03-10', 1),
+(4, 4, 'Orthopedics', 'SA-MD-004', 3, 385.00, '2016-11-20', 1),
+(5, 5, 'Internal Medicine', 'SA-MD-005', 2, 308.00, '2019-01-05', 1);
+
+-- 3. PATIENT TABLE
+DROP TABLE IF EXISTS `patient`;
+CREATE TABLE IF NOT EXISTS `patient` (
+  `PatientID` int NOT NULL AUTO_INCREMENT,
+  `PersonID` int NOT NULL,
+  `BloodType` enum('A+','A-','B+','B-','AB+','AB-','O+','O-') NOT NULL,
+  `MedicalHistory` text,
+  `RegistrationDate` date NOT NULL,
+  `EmergencyContactName` varchar(100) DEFAULT NULL,
+  `EmergencyContactPhone` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`PatientID`),
+  KEY `PersonID` (`PersonID`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `patient` (`PatientID`, `PersonID`, `BloodType`, `MedicalHistory`, `RegistrationDate`, `EmergencyContactName`, `EmergencyContactPhone`) VALUES
+(1, 6, 'A+', 'No chronic conditions', '2023-01-15', 'Ahmed Al-Qahtani', '0551234567'),
+(2, 7, 'O-', 'Hypertension, Diabetes Type 2', '2022-11-01', 'Nora Al-Malki', '0557654321'),
+(3, 8, 'B+', 'Asthma', '2023-03-20', 'Mohammed Al-Shehri', '0509876543'),
+(4, 9, 'AB+', 'Seasonal allergies', '2024-01-10', 'Huda Al-Anazi', '0554321098'),
+(5, 10, 'A-', 'Migraine', '2023-08-05', 'Faisal Al-Rashidi', '0567890123'),
+(6, 11, 'O+', 'Arthritis', '2022-06-12', 'Omar Al-Balawi', '0576543210'),
+(7, 12, 'B-', 'No chronic conditions', '2024-02-28', 'Sultan Al-Shammari', '0582109876');
